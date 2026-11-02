@@ -41,7 +41,18 @@ class Cubo:
 		self.rotar(cara, sentido)
 
 	def __str__(self):
-		return f"{self.cara_bl}\n{self.cara_na}\n{self.cara_ve}\n{self.cara_ro}\n{self.cara_az}\n{self.cara_am}"
+		# return f"{self.cara_bl}\n{self.cara_na}\n{self.cara_ve}\n{self.cara_ro}\n{self.cara_az}\n{self.cara_am}"
+		return (
+			                                             f"       {self.cara_bl[0]}{self.cara_bl[1]}{self.cara_bl[2]}\n"
+			                                             f"       {self.cara_bl[3]}{self.cara_bl[4]}{self.cara_bl[5]}\n"
+			                                             f"       {self.cara_bl[6]}{self.cara_bl[7]}{self.cara_bl[8]}\n"
+			f"{self.cara_na[0]}{self.cara_na[1]}{self.cara_na[2]} {self.cara_ve[0]}{self.cara_ve[1]}{self.cara_ve[2]} {self.cara_ro[0]}{self.cara_ro[1]}{self.cara_ro[2]} {self.cara_az[0]}{self.cara_az[1]}{self.cara_az[2]}\n"
+			f"{self.cara_na[3]}{self.cara_na[4]}{self.cara_na[5]} {self.cara_ve[3]}{self.cara_ve[4]}{self.cara_ve[5]} {self.cara_ro[3]}{self.cara_ro[4]}{self.cara_ro[5]} {self.cara_az[3]}{self.cara_az[4]}{self.cara_az[5]}\n"
+			f"{self.cara_na[6]}{self.cara_na[7]}{self.cara_na[8]} {self.cara_ve[6]}{self.cara_ve[7]}{self.cara_ve[8]} {self.cara_ro[6]}{self.cara_ro[7]}{self.cara_ro[8]} {self.cara_az[6]}{self.cara_az[7]}{self.cara_az[8]}\n"
+			                                             f"       {self.cara_am[0]}{self.cara_am[1]}{self.cara_am[2]}\n"
+			                                             f"       {self.cara_am[3]}{self.cara_am[4]}{self.cara_am[5]}\n"
+			                                             f"       {self.cara_am[6]}{self.cara_am[7]}{self.cara_am[8]}\n"
+		)
 
 	def __repr__(self):
 		return self.__str__()
