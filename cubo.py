@@ -20,19 +20,19 @@ class Cubo:
 	# función que obtenga la transformación del cubo en función del movimiento + posición del cubo
 	# ej. (movimiento R) + (a la derecha está el rojo): (sentido contrario a las agujas del reloj en la cara roja)
 	def get_transformacion(self, movimiento):
-		match movimiento:
+		match movimiento[0]:
 			case "R":
-				return self.posiciones[3], False
+				return self.posiciones[3], "'" in movimiento
 			case "U":
-				return self.posiciones[0], False
+				return self.posiciones[0], "'" in movimiento
 			case "F":
-				return self.posiciones[2], False
+				return self.posiciones[2], "'" in movimiento
 			case "D":
-				return self.posiciones[5], False
+				return self.posiciones[5], "'" in movimiento
 			case "L":
-				return self.posiciones[1], False
+				return self.posiciones[1], "'" in movimiento
 			case "B":
-				return self.posiciones[4], False
+				return self.posiciones[4], "'" in movimiento
 
 	def girar(self, cara, prima=False):
 		cara.rotar(prima)
@@ -44,6 +44,12 @@ class Cubo:
 					self.cara_am.set_linea("R", self.cara_az.get_linea("L'"))
 					self.cara_az.set_linea("L'", self.cara_bl.get_linea("R"))
 					self.cara_bl.set_linea("R", aux)
+				else:
+					aux = self.cara_ve.get_linea("R")
+					self.cara_ve.set_linea("R", self.cara_bl.get_linea("R"))
+					self.cara_bl.set_linea("R", self.cara_az.get_linea("L'"))
+					self.cara_az.set_linea("L'", self.cara_am.get_linea("R"))
+					self.cara_am.set_linea("R", aux)
 
 			case Color.BLANCO:
 				if not prima:
@@ -52,6 +58,12 @@ class Cubo:
 					self.cara_ro.set_linea("U", self.cara_az.get_linea("U"))
 					self.cara_az.set_linea("U", self.cara_na.get_linea("U"))
 					self.cara_na.set_linea("U", aux)
+				else:
+					aux = self.cara_ve.get_linea("U")
+					self.cara_ve.set_linea("U", self.cara_na.get_linea("U"))
+					self.cara_na.set_linea("U", self.cara_az.get_linea("U"))
+					self.cara_az.set_linea("U", self.cara_ro.get_linea("U"))
+					self.cara_ro.set_linea("U", aux)
 
 			case Color.VERDE:
 				if not prima:
@@ -60,6 +72,12 @@ class Cubo:
 					self.cara_na.set_linea("R'", self.cara_am.get_linea("U'"))
 					self.cara_am.set_linea("U'", self.cara_ro.get_linea("L"))
 					self.cara_ro.set_linea("L", aux)
+				else:
+					aux = self.cara_bl.get_linea("D")
+					self.cara_bl.set_linea("D", self.cara_ro.get_linea("L"))
+					self.cara_ro.set_linea("L", self.cara_am.get_linea("U'"))
+					self.cara_am.set_linea("U'", self.cara_na.get_linea("R'"))
+					self.cara_na.set_linea("R'", aux)
 
 			case Color.AMARILLO:
 				if not prima:
@@ -68,6 +86,12 @@ class Cubo:
 					self.cara_na.set_linea("D", self.cara_az.get_linea("D"))
 					self.cara_az.set_linea("D", self.cara_ro.get_linea("D"))
 					self.cara_ro.set_linea("D", aux)
+				else:
+					aux = self.cara_ve.get_linea("D")
+					self.cara_ve.set_linea("D", self.cara_ro.get_linea("D"))
+					self.cara_ro.set_linea("D", self.cara_az.get_linea("D"))
+					self.cara_az.set_linea("D", self.cara_na.get_linea("D"))
+					self.cara_na.set_linea("D", aux)
 
 			case Color.NARANJA:
 				if not prima:
@@ -76,18 +100,26 @@ class Cubo:
 					self.cara_bl.set_linea("L", self.cara_az.get_linea("R'"))
 					self.cara_az.set_linea("R'", self.cara_am.get_linea("L"))
 					self.cara_am.set_linea("L", aux)
+				else:
+					aux = self.cara_ve.get_linea("L")
+					self.cara_ve.set_linea("L", self.cara_am.get_linea("L"))
+					self.cara_am.set_linea("L", self.cara_az.get_linea("R'"))
+					self.cara_az.set_linea("R'", self.cara_bl.get_linea("L"))
+					self.cara_bl.set_linea("L", aux)
 
 			case Color.AZUL:
 				if not prima:
+					aux = self.cara_bl.get_linea("U")
+					self.cara_bl.set_linea("U", self.cara_ro.get_linea("R'"))
+					self.cara_ro.set_linea("R'", self.cara_am.get_linea("D'"))
+					self.cara_am.set_linea("D'", self.cara_na.get_linea("L'"))
+					self.cara_na.set_linea("L'", aux)
+				else:
 					aux = self.cara_bl.get_linea("U")
 					self.cara_bl.set_linea("U", self.cara_na.get_linea("L'"))
 					self.cara_na.set_linea("L'", self.cara_am.get_linea("D'"))
 					self.cara_am.set_linea("D'", self.cara_ro.get_linea("R'"))
 					self.cara_ro.set_linea("R'", aux)
-
-				
-
-
 
 	def hacer_movimiento(self, movimiento):
 		transformacion = self.get_transformacion(movimiento)
@@ -130,8 +162,8 @@ class Cara:
 			self.cara[6], self.cara[3], self.cara[0], self.cara[7], self.cara[1], self.cara[8], self.cara[5], self.cara[2] = self.cara[0], self.cara[1], self.cara[2], self.cara[3], self.cara[5], self.cara[6], self.cara[7], self.cara[8]
 
 	def get_linea(self, linea):
-	# líneas: U  D  L  R  - de izquierda a derecha, de arriba hacia abajo
-	# líneas: U' D' L' R' - de derecha a izquierda, de abajo hacia arriba
+		# líneas: U  D  L  R  - de izquierda a derecha, de arriba hacia abajo
+		# líneas: U' D' L' R' - de derecha a izquierda, de abajo hacia arriba
 		match linea[0]:
 			case "U":
 				valores = self.cara[0], self.cara[1], self.cara[2]
@@ -176,6 +208,14 @@ class Color(Enum):
 if __name__ == '__main__':
 	cubo = Cubo()
 	print(cubo)
-	cubo.hacer_movimiento("L")
-	print()
-	print(cubo)
+
+	mov = input("> ")
+	while mov != "Q":
+
+		cubo.hacer_movimiento(mov)
+
+		print()
+		print(cubo)
+
+		mov = input("> ")
+	
