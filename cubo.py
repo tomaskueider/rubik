@@ -1,11 +1,13 @@
+from enum import Enum
+
 class Cubo:
 	def __init__(self):
-		self.cara_bl = ["bl"] * 9 # usar enum para colores?
-		self.cara_na = ["na"] * 9
-		self.cara_ve = ["ve"] * 9
-		self.cara_ro = ["ro"] * 9
-		self.cara_az = ["az"] * 9
-		self.cara_am = ["am"] * 9
+		self.cara_bl = [Color.BLANCO] * 9 
+		self.cara_na = [Color.NARANJA] * 9
+		self.cara_ve = [Color.VERDE] * 9
+		self.cara_ro = [Color.ROJO] * 9
+		self.cara_az = [Color.AZUL] * 9
+		self.cara_am = [Color.AMARILLO] * 9
 		# 0 1 2
 		# 3 4 5
 		# 6 7 8
@@ -28,7 +30,7 @@ class Cubo:
 
 	def girar(self, cara, sentido): # prima = False en lugar de sentido?
 		match cara[4]: # hacer clases para las caras? cara[4] es el color del centro, identifica a la cara
-			case "ro":
+			case Color.ROJO:
 				cara[0], cara[1], cara[2], cara[3], cara[5], cara[6], cara[7], cara[8] = cara[6], cara[3], cara[0], cara[7], cara[1], cara[8], cara[5], cara[2]
 
 				aux = self.cara_ve[2], self.cara_ve[5], self.cara_ve[8]
@@ -37,7 +39,7 @@ class Cubo:
 				self.cara_az[6], self.cara_az[3], self.cara_az[0] = self.cara_bl[2], self.cara_bl[5], self.cara_bl[8]
 				self.cara_bl[2], self.cara_bl[5], self.cara_bl[8] = aux
 
-			case "bl":
+			case Color.BLANCO:
 				cara[0], cara[1], cara[2], cara[3], cara[5], cara[6], cara[7], cara[8] = cara[6], cara[3], cara[0], cara[7], cara[1], cara[8], cara[5], cara[2]
 
 				aux = self.cara_ve[0], self.cara_ve[1], self.cara_ve[2]
@@ -46,7 +48,7 @@ class Cubo:
 				self.cara_az[0], self.cara_az[1], self.cara_az[2] = self.cara_na[0], self.cara_na[1], self.cara_na[2]
 				self.cara_na[0], self.cara_na[1], self.cara_na[2] = aux
 
-			case "ve":
+			case Color.VERDE:
 				cara[0], cara[1], cara[2], cara[3], cara[5], cara[6], cara[7], cara[8] = cara[6], cara[3], cara[0], cara[7], cara[1], cara[8], cara[5], cara[2]
 
 				aux = self.cara_bl[6], self.cara_bl[7], self.cara_bl[8]
@@ -78,6 +80,27 @@ class Cubo:
 			                                             f"       {self.cara_am[3]}{self.cara_am[4]}{self.cara_am[5]}\n"
 			                                             f"       {self.cara_am[6]}{self.cara_am[7]}{self.cara_am[8]}\n"
 		)
+
+	def __repr__(self):
+		return self.__str__()
+
+
+
+# class Cara:
+# 	def __init__(self, color):
+# 		pass
+
+
+class Color(Enum):
+	BLANCO = "bl"
+	NARANJA = "na"
+	VERDE = "ve"
+	ROJO = "ro"
+	AZUL = "az"
+	AMARILLO = "am"
+
+	def __str__(self):
+		return self.value
 
 	def __repr__(self):
 		return self.__str__()
