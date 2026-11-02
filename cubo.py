@@ -2,12 +2,12 @@ from enum import Enum
 
 class Cubo:
 	def __init__(self):
-		self.cara_bl = [Color.BLANCO] * 9 
-		self.cara_na = [Color.NARANJA] * 9
-		self.cara_ve = [Color.VERDE] * 9
-		self.cara_ro = [Color.ROJO] * 9
-		self.cara_az = [Color.AZUL] * 9
-		self.cara_am = [Color.AMARILLO] * 9
+		self.cara_bl = Cara(Color.BLANCO)
+		self.cara_na = Cara(Color.NARANJA)
+		self.cara_ve = Cara(Color.VERDE)
+		self.cara_ro = Cara(Color.ROJO)
+		self.cara_az = Cara(Color.AZUL)
+		self.cara_am = Cara(Color.AMARILLO)
 		# 0 1 2
 		# 3 4 5
 		# 6 7 8
@@ -86,9 +86,50 @@ class Cubo:
 
 
 
-# class Cara:
-# 	def __init__(self, color):
-# 		pass
+class Cara:
+	def __init__(self, color: Color):
+		self.color = color
+		self.cara = [color] * 9
+
+	def __getitem__(self, indice):
+		return self.cara[indice]
+
+	def __setitem__(self, indice, valor):
+		self.cara[indice] = valor
+
+	def rotar(self, prima=False):
+		if not prima:
+			self.cara[0], self.cara[1], self.cara[2], self.cara[3], self.cara[5], self.cara[6], self.cara[7], self.cara[8] = self.cara[6], self.cara[3], self.cara[0], self.cara[7], self.cara[1], self.cara[8], self.cara[5], self.cara[2]
+		else:
+			pass # creo que solo es invertir la asignación de arriba
+
+	def get_linea(self, linea):
+	# líneas: U  D  L  R  - de izquierda a derecha, de arriba hacia abajo
+	# líneas: U' D' L' R' - de derecha a izquierda, de abajo hacia arriba
+		match linea[0]:
+			case "U":
+				valores = self.cara[0], self.cara[1], self.cara[2]
+			case "D":
+				valores = self.cara[6], self.cara[7], self.cara[8]
+			case "L":
+				valores = self.cara[0], self.cara[3], self.cara[6]
+			case "R":
+				valores = self.cara[2], self.cara[5], self.cara[8]
+		
+		return valores if "'" not in linea else valores[::-1]
+
+	def set_linea(self, linea, valores):
+		if "'" in linea:
+			valores = valores[::-1]
+		match linea[0]:
+			case "U":
+				self.cara[0], self.cara[1], self.cara[2] = valores
+			case "D":
+				self.cara[6], self.cara[7], self.cara[8] = valores
+			case "L":
+				self.cara[0], self.cara[3], self.cara[6] = valores
+			case "R":
+				self.cara[2], self.cara[5], self.cara[8] = valores
 
 
 class Color(Enum):
