@@ -18,7 +18,7 @@ class Cubo:
 				  		   self.cara_am]
 		
 	# función que obtenga la transformación del cubo en función del movimiento + posición del cubo
-	# ej. (movimiento R) + (a la derecha está el rojo): (sentido contrario a las agujas del reloj en la cara roja)
+	# ej. (movimiento R) + (a la derecha está el rojo): (sentido antihorario en la cara roja)
 	def get_transformacion(self, movimiento):
 		match movimiento[0]:
 			case "R":
@@ -33,6 +33,7 @@ class Cubo:
 				return self.posiciones[1], "'" in movimiento
 			case "B":
 				return self.posiciones[4], "'" in movimiento
+
 
 	def girar(self, cara, prima=False):
 		cara.rotar(prima)
@@ -122,9 +123,27 @@ class Cubo:
 					self.cara_ro.set_linea("R'", aux)
 
 	def hacer_movimiento(self, movimiento):
-		transformacion = self.get_transformacion(movimiento)
-		cara, prima = transformacion
-		self.girar(cara, prima)
+		# seguramente todo este flujo se puede hacer mejor
+		movimiento = movimiento.upper()
+
+		# rotaciones:
+		if movimiento == "X":
+			self.posiciones[0], self.posiciones[2], self.posiciones[4], self.posiciones[5] = self.posiciones[2], self.posiciones[5], self.posiciones[0], self.posiciones[4]
+		elif movimiento == "Y":
+			self.posiciones[1], self.posiciones[2], self.posiciones[3], self.posiciones[4] = self.posiciones[2], self.posiciones[3], self.posiciones[4], self.posiciones[1]
+		elif movimiento == "Z":
+			self.posiciones[0], self.posiciones[1], self.posiciones[3], self.posiciones[5] = self.posiciones[1], self.posiciones[5], self.posiciones[0], self.posiciones[3]
+		elif movimiento == "X'":
+			self.posiciones[2], self.posiciones[5], self.posiciones[0], self.posiciones[4] = self.posiciones[0], self.posiciones[2], self.posiciones[4], self.posiciones[5]
+		elif movimiento == "Y'":
+			self.posiciones[2], self.posiciones[3], self.posiciones[4], self.posiciones[1] = self.posiciones[1], self.posiciones[2], self.posiciones[3], self.posiciones[4]
+		elif movimiento == "Z'":
+			self.posiciones[1], self.posiciones[5], self.posiciones[0], self.posiciones[3] = self.posiciones[0], self.posiciones[1], self.posiciones[3], self.posiciones[5]
+		else:
+			# girar alguna cara:
+			transformacion = self.get_transformacion(movimiento)
+			cara, prima = transformacion
+			self.girar(cara, prima)
 
 	def __str__(self):
 		return (
@@ -210,7 +229,7 @@ if __name__ == '__main__':
 	print(cubo)
 
 	mov = input("> ")
-	while mov != "Q":
+	while mov not in  ("Q", "q"):
 
 		cubo.hacer_movimiento(mov)
 
