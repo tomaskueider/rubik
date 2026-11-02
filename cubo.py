@@ -22,52 +22,68 @@ class Cubo:
 	def get_transformacion(self, movimiento):
 		match movimiento:
 			case "R":
-				return self.posiciones[3], "contrarreloj" # enum para sentido? bool?
+				return self.posiciones[3], False
 			case "U":
-				return self.posiciones[0], "contrarreloj"
+				return self.posiciones[0], False
 			case "F":
-				return self.posiciones[2], "contrarreloj"
+				return self.posiciones[2], False
 			case "D":
-				return self.posiciones[5], "contrarreloj"
+				return self.posiciones[5], False
+			case "L":
+				return self.posiciones[1], False
+			case "B":
+				return self.posiciones[4], False
 
-	def girar(self, cara, sentido): # prima = False en lugar de sentido?
-		match cara[4]: # hacer clases para las caras? cara[4] es el color del centro, identifica a la cara
+	def girar(self, cara, prima=False):
+		cara.rotar(prima)
+		match cara.color:
 			case Color.ROJO:
-				cara[0], cara[1], cara[2], cara[3], cara[5], cara[6], cara[7], cara[8] = cara[6], cara[3], cara[0], cara[7], cara[1], cara[8], cara[5], cara[2]
-
-				aux = self.cara_ve[2], self.cara_ve[5], self.cara_ve[8]
-				self.cara_ve[2], self.cara_ve[5], self.cara_ve[8] = self.cara_am[2], self.cara_am[5], self.cara_am[8]
-				self.cara_am[2], self.cara_am[5], self.cara_am[8] = self.cara_az[6], self.cara_az[3], self.cara_az[0]
-				self.cara_az[6], self.cara_az[3], self.cara_az[0] = self.cara_bl[2], self.cara_bl[5], self.cara_bl[8]
-				self.cara_bl[2], self.cara_bl[5], self.cara_bl[8] = aux
+				if not prima:
+					aux = self.cara_ve.get_linea("R")
+					self.cara_ve.set_linea("R", self.cara_am.get_linea("R"))
+					self.cara_am.set_linea("R", self.cara_az.get_linea("L'"))
+					self.cara_az.set_linea("L'", self.cara_bl.get_linea("R"))
+					self.cara_bl.set_linea("R", aux)
 
 			case Color.BLANCO:
-				cara[0], cara[1], cara[2], cara[3], cara[5], cara[6], cara[7], cara[8] = cara[6], cara[3], cara[0], cara[7], cara[1], cara[8], cara[5], cara[2]
-
-				aux = self.cara_ve[0], self.cara_ve[1], self.cara_ve[2]
-				self.cara_ve[0], self.cara_ve[1], self.cara_ve[2] = self.cara_ro[0], self.cara_ro[1], self.cara_ro[2]
-				self.cara_ro[0], self.cara_ro[1], self.cara_ro[2] = self.cara_az[0], self.cara_az[1], self.cara_az[2]
-				self.cara_az[0], self.cara_az[1], self.cara_az[2] = self.cara_na[0], self.cara_na[1], self.cara_na[2]
-				self.cara_na[0], self.cara_na[1], self.cara_na[2] = aux
+				if not prima:
+					aux = self.cara_ve.get_linea("U")
+					self.cara_ve.set_linea("U", self.cara_ro.get_linea("U"))
+					self.cara_ro.set_linea("U", self.cara_az.get_linea("U"))
+					self.cara_az.set_linea("U", self.cara_na.get_linea("U"))
+					self.cara_na.set_linea("U", aux)
 
 			case Color.VERDE:
-				cara[0], cara[1], cara[2], cara[3], cara[5], cara[6], cara[7], cara[8] = cara[6], cara[3], cara[0], cara[7], cara[1], cara[8], cara[5], cara[2]
-
-				aux = self.cara_bl[6], self.cara_bl[7], self.cara_bl[8]
-				self.cara_bl[6], self.cara_bl[7], self.cara_bl[8] = self.cara_na[8], self.cara_na[5], self.cara_na[2]
-				self.cara_na[8], self.cara_na[5], self.cara_na[2] = self.cara_am[2], self.cara_am[1], self.cara_am[0]
-				self.cara_am[2], self.cara_am[1], self.cara_am[0] = self.cara_ro[0], self.cara_ro[3], self.cara_ro[6]
-				self.cara_ro[0], self.cara_ro[3], self.cara_ro[6] = aux
+				if not prima:
+					aux = self.cara_bl.get_linea("D")
+					self.cara_bl.set_linea("D", self.cara_na.get_linea("R'"))
+					self.cara_na.set_linea("R'", self.cara_am.get_linea("U'"))
+					self.cara_am.set_linea("U'", self.cara_ro.get_linea("L"))
+					self.cara_ro.set_linea("L", aux)
 
 			case Color.AMARILLO:
-				cara.rotar()
+				if not prima:
+					aux = self.cara_ve.get_linea("D")
+					self.cara_ve.set_linea("D", self.cara_na.get_linea("D"))
+					self.cara_na.set_linea("D", self.cara_az.get_linea("D"))
+					self.cara_az.set_linea("D", self.cara_ro.get_linea("D"))
+					self.cara_ro.set_linea("D", aux)
 
-				aux = self.cara_ve.get_linea("D")
-				self.cara_ve.set_linea("D", self.cara_na.get_linea("D"))
-				self.cara_na.set_linea("D", self.cara_az.get_linea("D"))
-				self.cara_az.set_linea("D", self.cara_ro.get_linea("D"))
-				self.cara_ro.set_linea("D", aux)
+			case Color.NARANJA:
+				if not prima:
+					aux = self.cara_ve.get_linea("L")
+					self.cara_ve.set_linea("L", self.cara_bl.get_linea("L"))
+					self.cara_bl.set_linea("L", self.cara_az.get_linea("R'"))
+					self.cara_az.set_linea("R'", self.cara_am.get_linea("L"))
+					self.cara_am.set_linea("L", aux)
 
+			case Color.AZUL:
+				if not prima:
+					aux = self.cara_bl.get_linea("U")
+					self.cara_bl.set_linea("U", self.cara_na.get_linea("L'"))
+					self.cara_na.set_linea("L'", self.cara_am.get_linea("D'"))
+					self.cara_am.set_linea("D'", self.cara_ro.get_linea("R'"))
+					self.cara_ro.set_linea("R'", aux)
 
 				
 
@@ -75,8 +91,8 @@ class Cubo:
 
 	def hacer_movimiento(self, movimiento):
 		transformacion = self.get_transformacion(movimiento)
-		cara, sentido = transformacion
-		self.girar(cara, sentido)
+		cara, prima = transformacion
+		self.girar(cara, prima)
 
 	def __str__(self):
 		return (
@@ -111,7 +127,7 @@ class Cara:
 		if not prima:
 			self.cara[0], self.cara[1], self.cara[2], self.cara[3], self.cara[5], self.cara[6], self.cara[7], self.cara[8] = self.cara[6], self.cara[3], self.cara[0], self.cara[7], self.cara[1], self.cara[8], self.cara[5], self.cara[2]
 		else:
-			pass # creo que solo es invertir la asignación de arriba
+			self.cara[6], self.cara[3], self.cara[0], self.cara[7], self.cara[1], self.cara[8], self.cara[5], self.cara[2] = self.cara[0], self.cara[1], self.cara[2], self.cara[3], self.cara[5], self.cara[6], self.cara[7], self.cara[8]
 
 	def get_linea(self, linea):
 	# líneas: U  D  L  R  - de izquierda a derecha, de arriba hacia abajo
@@ -160,15 +176,6 @@ class Color(Enum):
 if __name__ == '__main__':
 	cubo = Cubo()
 	print(cubo)
-	cubo.hacer_movimiento("R")
-	print()
-	print(cubo)
-	cubo.hacer_movimiento("U")
-	print()
-	print(cubo)
-	cubo.hacer_movimiento("F")
-	print()
-	print(cubo)
-	cubo.hacer_movimiento("D")
+	cubo.hacer_movimiento("L")
 	print()
 	print(cubo)
