@@ -27,6 +27,8 @@ class Cubo:
 				return self.posiciones[0], "contrarreloj"
 			case "F":
 				return self.posiciones[2], "contrarreloj"
+			case "D":
+				return self.posiciones[5], "contrarreloj"
 
 	def girar(self, cara, sentido): # prima = False en lugar de sentido?
 		match cara[4]: # hacer clases para las caras? cara[4] es el color del centro, identifica a la cara
@@ -57,6 +59,14 @@ class Cubo:
 				self.cara_am[2], self.cara_am[1], self.cara_am[0] = self.cara_ro[0], self.cara_ro[3], self.cara_ro[6]
 				self.cara_ro[0], self.cara_ro[3], self.cara_ro[6] = aux
 
+			case Color.AMARILLO:
+				cara.rotar()
+
+				aux = self.cara_ve.get_linea("D")
+				self.cara_ve.set_linea("D", self.cara_na.get_linea("D"))
+				self.cara_na.set_linea("D", self.cara_az.get_linea("D"))
+				self.cara_az.set_linea("D", self.cara_ro.get_linea("D"))
+				self.cara_ro.set_linea("D", aux)
 
 
 				
@@ -157,5 +167,8 @@ if __name__ == '__main__':
 	print()
 	print(cubo)
 	cubo.hacer_movimiento("F")
+	print()
+	print(cubo)
+	cubo.hacer_movimiento("D")
 	print()
 	print(cubo)
