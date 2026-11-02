@@ -1,18 +1,18 @@
 class Cubo:
 	def __init__(self):
-		self.cara_bl = ["bl", "bl", "bl", "bl", "bl", "bl", "bl", "bl", "bl"] # usar bucles?
-		self.cara_na = ["na", "na", "na", "na", "na", "na", "na", "na", "na"] # usar enum para colores?
-		self.cara_ve = ["ve", "ve", "ve", "ve", "ve", "ve", "ve", "ve", "ve"]
-		self.cara_ro = ["ro", "ro", "ro", "ro", "ro", "ro", "ro", "ro", "ro"]
-		self.cara_az = ["az", "az", "az", "az", "az", "az", "az", "az", "az"]
-		self.cara_am = ["am", "am", "am", "am", "am", "am", "am", "am", "am"]
+		self.cara_bl = ["bl"] * 9 # usar enum para colores?
+		self.cara_na = ["na"] * 9
+		self.cara_ve = ["ve"] * 9
+		self.cara_ro = ["ro"] * 9
+		self.cara_az = ["az"] * 9
+		self.cara_am = ["am"] * 9
 		# 0 1 2
 		# 3 4 5
 		# 6 7 8
 
 		# default: F: verde, U: blanco, R: rojo, ...
 		self.posiciones = [self.cara_bl, 
-				  self.cara_na, self.cara_ve, self.cara_ro, self.cara_az, 
+			 self.cara_na, self.cara_ve, self.cara_ro, self.cara_az, 
 				  		   self.cara_am]
 		
 	# función que obtenga la transformación del cubo en función del movimiento + posición del cubo
@@ -22,7 +22,7 @@ class Cubo:
 			case "R":
 				return self.posiciones[3], "contrarreloj" # enum para sentido? bool?
 
-	def rotar(self, cara, sentido):
+	def girar(self, cara, sentido): # prima = False en lugar de sentido?
 		match cara[4]: # hacer clases para las caras?
 			case "ro":
 				cara[0], cara[1], cara[2], cara[3], cara[5], cara[6], cara[7], cara[8] = cara[6], cara[3], cara[0], cara[7], cara[1], cara[8], cara[5], cara[2]
@@ -38,7 +38,7 @@ class Cubo:
 	def hacer_movimiento(self, movimiento):
 		transformacion = self.get_transformacion(movimiento)
 		cara, sentido = transformacion
-		self.rotar(cara, sentido)
+		self.girar(cara, sentido)
 
 	def __str__(self):
 		# return f"{self.cara_bl}\n{self.cara_na}\n{self.cara_ve}\n{self.cara_ro}\n{self.cara_az}\n{self.cara_am}"
