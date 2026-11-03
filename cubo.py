@@ -183,7 +183,7 @@ class Cubo:
 					self.can_rotaciones[self.posiciones[5].color] += 3
 					self.posiciones[1], self.posiciones[5], self.posiciones[0], self.posiciones[3] = self.posiciones[0], self.posiciones[1], self.posiciones[3], self.posiciones[5]
 
-	def __str__(self):
+	def get_posiciones_visual(self):
 		cara_bl_visual = Cara(Color.BLANCO, self.cara_bl.cara.copy())
 		cara_na_visual = Cara(Color.NARANJA, self.cara_na.cara.copy())
 		cara_ve_visual = Cara(Color.VERDE, self.cara_ve.cara.copy())
@@ -202,10 +202,15 @@ class Cubo:
 		
 
 		for cara in posiciones_visual:
-			print(f"{cara.color} está en posición {posiciones_visual.index(cara)} y tiene que rotar {self.can_rotaciones[cara.color]} veces")
+			# print(f"{cara.color} está en posición {posiciones_visual.index(cara)} y tiene que rotar {self.can_rotaciones[cara.color]} veces")
 			for _ in range(self.can_rotaciones[cara.color]):
 				cara.rotar()
 
+		return posiciones_visual
+
+	def __str__(self):
+		posiciones_visual = self.get_posiciones_visual()
+		
 		return (
 			                                             f"       {posiciones_visual[0][0]}{posiciones_visual[0][1]}{posiciones_visual[0][2]}\n"
 			                                             f"       {posiciones_visual[0][3]}{posiciones_visual[0][4]}{posiciones_visual[0][5]}\n"
