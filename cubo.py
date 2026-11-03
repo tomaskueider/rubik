@@ -144,43 +144,43 @@ class Cubo:
 			case "X":
 				if not prima:
 					# rotación visual (tiene que ir antes para que se sume bien en el mapeo)
-					self.can_rotaciones[self.posiciones[0].color] += 2
-					self.can_rotaciones[self.posiciones[4].color] += 2
-					self.can_rotaciones[self.posiciones[3].color] += 1
-					self.can_rotaciones[self.posiciones[1].color] += 3
+					self.can_rotaciones[self.posiciones[0].color] += 2 # blanco
+					self.can_rotaciones[self.posiciones[4].color] += 2 # azul
+					self.can_rotaciones[self.posiciones[3].color] += 1 # rojo
+					self.can_rotaciones[self.posiciones[1].color] += 3 # naranja
 					# rotación funcional
 					self.posiciones[0], self.posiciones[2], self.posiciones[4], self.posiciones[5] = self.posiciones[2], self.posiciones[5], self.posiciones[0], self.posiciones[4]
 				else:
-					self.can_rotaciones[self.posiciones[5].color] += 2
-					self.can_rotaciones[self.posiciones[4].color] += 2
-					self.can_rotaciones[self.posiciones[3].color] += 3
-					self.can_rotaciones[self.posiciones[1].color] += 1
+					self.can_rotaciones[self.posiciones[5].color] += 2 # amarillo
+					self.can_rotaciones[self.posiciones[4].color] += 2 # azul
+					self.can_rotaciones[self.posiciones[3].color] += 3 # rojo
+					self.can_rotaciones[self.posiciones[1].color] += 1 # naranja
 					self.posiciones[2], self.posiciones[5], self.posiciones[0], self.posiciones[4] = self.posiciones[0], self.posiciones[2], self.posiciones[4], self.posiciones[5]
 			case "Y":
 				if not prima:
-					self.can_rotaciones[self.posiciones[0].color] += 1
-					self.can_rotaciones[self.posiciones[5].color] += 3
+					self.can_rotaciones[self.posiciones[0].color] += 1 # blanco
+					self.can_rotaciones[self.posiciones[5].color] += 3 # amarillo
 					self.posiciones[1], self.posiciones[2], self.posiciones[3], self.posiciones[4] = self.posiciones[2], self.posiciones[3], self.posiciones[4], self.posiciones[1]
 				else:
-					self.can_rotaciones[self.posiciones[0].color] += 3
-					self.can_rotaciones[self.posiciones[5].color] += 1
+					self.can_rotaciones[self.posiciones[0].color] += 3 # blanco
+					self.can_rotaciones[self.posiciones[5].color] += 1 # amarillo
 					self.posiciones[2], self.posiciones[3], self.posiciones[4], self.posiciones[1] = self.posiciones[1], self.posiciones[2], self.posiciones[3], self.posiciones[4]
 			case "Z":
 				if not prima:
-					self.can_rotaciones[self.posiciones[0].color] += 1
-					self.can_rotaciones[self.posiciones[2].color] += 1
-					self.can_rotaciones[self.posiciones[4].color] += 3
-					self.can_rotaciones[self.posiciones[3].color] += 1
-					self.can_rotaciones[self.posiciones[1].color] += 1
-					self.can_rotaciones[self.posiciones[5].color] += 1
+					self.can_rotaciones[self.posiciones[0].color] += 1 # blanco
+					self.can_rotaciones[self.posiciones[2].color] += 1 # verde
+					self.can_rotaciones[self.posiciones[4].color] += 3 # azul
+					self.can_rotaciones[self.posiciones[3].color] += 1 # rojo
+					self.can_rotaciones[self.posiciones[1].color] += 1 # naranja
+					self.can_rotaciones[self.posiciones[5].color] += 1 # amarillo
 					self.posiciones[0], self.posiciones[1], self.posiciones[3], self.posiciones[5] = self.posiciones[1], self.posiciones[5], self.posiciones[0], self.posiciones[3]
 				else:
-					self.can_rotaciones[self.posiciones[0].color] += 3
-					self.can_rotaciones[self.posiciones[2].color] += 3
-					self.can_rotaciones[self.posiciones[4].color] += 1
-					self.can_rotaciones[self.posiciones[3].color] += 3
-					self.can_rotaciones[self.posiciones[1].color] += 3
-					self.can_rotaciones[self.posiciones[5].color] += 3
+					self.can_rotaciones[self.posiciones[0].color] += 3 # blanco
+					self.can_rotaciones[self.posiciones[2].color] += 3 # verde
+					self.can_rotaciones[self.posiciones[4].color] += 1 # azul
+					self.can_rotaciones[self.posiciones[3].color] += 3 # rojo
+					self.can_rotaciones[self.posiciones[1].color] += 3 # naranja
+					self.can_rotaciones[self.posiciones[5].color] += 3 # amarillo
 					self.posiciones[1], self.posiciones[5], self.posiciones[0], self.posiciones[3] = self.posiciones[0], self.posiciones[1], self.posiciones[3], self.posiciones[5]
 
 	def get_posiciones_visual(self):

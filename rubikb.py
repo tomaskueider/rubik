@@ -58,9 +58,11 @@ while running:
 	r7 = pygame.Rect(282, 208, size, size)
 	r8 = pygame.Rect(306, 196, size, size)
 
-	u = cubo.posiciones[0]
-	f = cubo.posiciones[2]
-	r = cubo.posiciones[3]
+	caras = cubo.get_posiciones_visual()
+
+	u = caras[0]
+	f = caras[2]
+	r = caras[3]
 
 	# definir colores y dibujarlos
 	pygame.draw.rect(screen, get_color(u[0]), u0)
