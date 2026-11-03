@@ -210,6 +210,19 @@ class Cubo:
 	def __repr__(self):
 		return self.__str__()
 
+class Color(Enum):
+	BLANCO = "bl"
+	NARANJA = "na"
+	VERDE = "ve"
+	ROJO = "ro"
+	AZUL = "az"
+	AMARILLO = "am"
+
+	def __str__(self):
+		return self.value
+
+	def __repr__(self):
+		return self.__str__()
 
 class Cara:
 	def __init__(self, color: Color, cara=None):
@@ -262,20 +275,6 @@ class Cara:
 				self.cara[0], self.cara[3], self.cara[6] = valores
 			case "R":
 				self.cara[2], self.cara[5], self.cara[8] = valores
-
-class Color(Enum):
-	BLANCO = "bl"
-	NARANJA = "na"
-	VERDE = "ve"
-	ROJO = "ro"
-	AZUL = "az"
-	AMARILLO = "am"
-
-	def __str__(self):
-		return self.value
-
-	def __repr__(self):
-		return self.__str__()
 
 
 if __name__ == '__main__':
