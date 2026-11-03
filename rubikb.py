@@ -99,23 +99,32 @@ while running:
 		if event.type == pygame.KEYDOWN:
 			match event.key:
 				case pygame.K_r:
-					cubo.hacer_movimiento("r")
+					m = "r"
 				case pygame.K_l:
-					cubo.hacer_movimiento("l")
+					m = "l"
 				case pygame.K_u:
-					cubo.hacer_movimiento("u")
+					m = "u"
 				case pygame.K_d:
-					cubo.hacer_movimiento("d")
+					m = "d"
 				case pygame.K_f:
-					cubo.hacer_movimiento("f")
+					m = "f"
 				case pygame.K_b:
-					cubo.hacer_movimiento("b")
+					m = "b"
 				case pygame.K_x:
-					cubo.hacer_movimiento("x")
+					m = "x"
 				case pygame.K_y:
-					cubo.hacer_movimiento("y")
+					m = "y"
 				case pygame.K_z:
-					cubo.hacer_movimiento("z")
+					m = "z"
+				case pygame.K_q:
+					running = False
+				case _:
+					break
+
+			if event.mod & pygame.KMOD_SHIFT:
+				m += "'"
+
+			cubo.hacer_movimiento(m)
 
 	pygame.display.flip()
 
