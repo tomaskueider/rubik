@@ -21,79 +21,56 @@ def get_color(color):
 		case Color.AMARILLO:
 			return (255, 255, 0)
 
+def sumar_tuplas(t1, t2):
+	return ((t1[0] + t2[0]), (t1[1] + t2[1]))
+
+def multiplicar_tupla(t, v):
+	return ((t[0] * v), (t[1] * v))
+
+def get_coords(position, template, size, offset):
+	return tuple(sumar_tuplas(multiplicar_tupla(sumar_tuplas(position, template[i]), size), offset) for i in range(4))
+	
+templ_u = ((0, 0), (2, 1), (0, 2), (-2, 1))
+templ_f = ((0, 0), (2, 1), (2, 3.33), (0, 2.33))
+templ_r = ((0, 0), (2, -1), (2, 1.33), (0, 2.33))
+
+coords_base = {
+		"u": ((6, 0), (8, 1), (10, 2), (4, 1), (6, 2), (8, 3), (2, 2), (4, 3), (6, 4)),
+		"f": ((0, 3), (2, 4), (4, 5), (0, 5.33), (2, 6.33), (4, 7.33), (0, 7.67), (2, 8.67), (4, 9.67)),
+		"r": ((6, 6), (8, 5), (10, 4), (6, 8.33), (8, 7.33), (10, 6.33), (6, 10.67), (8, 9.67), (10, 8.67))
+	}
+
+# multiplicar todo x3 para que quede redondo
+# lo hice a esta escala para que la distancia más chica quede en 1
+
+size = 10
+offset = (100, 50)
 
 cubo = Cubo()
-size = 20
 running = True
 while running:
-
-	# rects con coordenadas
-	u0 = pygame.Rect(246, 100, size, size)
-	u1 = pygame.Rect(270, 112, size, size)
-	u2 = pygame.Rect(294, 124, size, size)
-	u3 = pygame.Rect(222, 112, size, size)
-	u4 = pygame.Rect(246, 124, size, size)
-	u5 = pygame.Rect(270, 136, size, size)
-	u6 = pygame.Rect(198, 124, size, size)
-	u7 = pygame.Rect(222, 136, size, size)
-	u8 = pygame.Rect(246, 148, size, size)
-
-	f0 = pygame.Rect(186, 148, size, size)
-	f1 = pygame.Rect(210, 160, size, size)
-	f2 = pygame.Rect(234, 172, size, size)
-	f3 = pygame.Rect(186, 172, size, size)
-	f4 = pygame.Rect(210, 184, size, size)
-	f5 = pygame.Rect(234, 196, size, size)
-	f6 = pygame.Rect(186, 196, size, size)
-	f7 = pygame.Rect(210, 208, size, size)
-	f8 = pygame.Rect(234, 220, size, size)
-
-	r0 = pygame.Rect(258, 172, size, size)
-	r1 = pygame.Rect(282, 160, size, size)
-	r2 = pygame.Rect(306, 148, size, size)
-	r3 = pygame.Rect(258, 196, size, size)
-	r4 = pygame.Rect(282, 184, size, size)
-	r5 = pygame.Rect(306, 172, size, size)
-	r6 = pygame.Rect(258, 220, size, size)
-	r7 = pygame.Rect(282, 208, size, size)
-	r8 = pygame.Rect(306, 196, size, size)
-
 	caras = cubo.get_posiciones_visual()
 
-	u = caras[0]
-	f = caras[2]
-	r = caras[3]
+	colores_u = caras[0]
+	colores_f = caras[2]
+	colores_r = caras[3]
 
-	# definir colores y dibujarlos
-	pygame.draw.rect(screen, get_color(u[0]), u0)
-	pygame.draw.rect(screen, get_color(u[1]), u1)
-	pygame.draw.rect(screen, get_color(u[2]), u2)
-	pygame.draw.rect(screen, get_color(u[3]), u3)
-	pygame.draw.rect(screen, get_color(u[4]), u4)
-	pygame.draw.rect(screen, get_color(u[5]), u5)
-	pygame.draw.rect(screen, get_color(u[6]), u6)
-	pygame.draw.rect(screen, get_color(u[7]), u7)
-	pygame.draw.rect(screen, get_color(u[8]), u8)
+	# esto se puede hacer más limpio
+	coords_u = coords_base["u"]
+	coords_f = coords_base["f"]
+	coords_r = coords_base["r"]
 
-	pygame.draw.rect(screen, get_color(f[0]), f0)
-	pygame.draw.rect(screen, get_color(f[1]), f1)
-	pygame.draw.rect(screen, get_color(f[2]), f2)
-	pygame.draw.rect(screen, get_color(f[3]), f3)
-	pygame.draw.rect(screen, get_color(f[4]), f4)
-	pygame.draw.rect(screen, get_color(f[5]), f5)
-	pygame.draw.rect(screen, get_color(f[6]), f6)
-	pygame.draw.rect(screen, get_color(f[7]), f7)
-	pygame.draw.rect(screen, get_color(f[8]), f8)
+	# cara U
+	for color, coords in zip(colores_u, coords_u):
+		# print(color, get_color(color), coords, get_coords(coords, templ_u, size, offset))
+		pygame.draw.polygon(screen, get_color(color), get_coords(coords, templ_u, size, offset))
+	
+	for color, coords in zip(colores_f, coords_f):
+		pygame.draw.polygon(screen, get_color(color), get_coords(coords, templ_f, size, offset))
 
-	pygame.draw.rect(screen, get_color(r[0]), r0)
-	pygame.draw.rect(screen, get_color(r[1]), r1)
-	pygame.draw.rect(screen, get_color(r[2]), r2)
-	pygame.draw.rect(screen, get_color(r[3]), r3)
-	pygame.draw.rect(screen, get_color(r[4]), r4)
-	pygame.draw.rect(screen, get_color(r[5]), r5)
-	pygame.draw.rect(screen, get_color(r[6]), r6)
-	pygame.draw.rect(screen, get_color(r[7]), r7)
-	pygame.draw.rect(screen, get_color(r[8]), r8)
+	for color, coords in zip(colores_r, coords_r):
+		pygame.draw.polygon(screen, get_color(color), get_coords(coords, templ_r, size, offset))
+
 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
