@@ -16,6 +16,15 @@ class Cubo:
 
 		self.giros = ("R", "U", "F", "D", "L", "B")
 		self.rotaciones = ("X", "Y", "Z")
+
+		self.can_rotaciones = {
+			Color.BLANCO: 0,
+			Color.NARANJA: 0,
+			Color.VERDE: 0,
+			Color.ROJO: 0,
+			Color.AZUL: 0,
+			Color.AMARILLO: 0
+		}
 		
 	def hacer_movimiento(self, movimiento):
 		movimiento = movimiento.upper()
@@ -134,34 +143,79 @@ class Cubo:
 		match movimiento:
 			case "X":
 				if not prima:
+					# rotación visual (tiene que ir antes para que se sume bien en el mapeo)
+					self.can_rotaciones[self.posiciones[0].color] += 2
+					self.can_rotaciones[self.posiciones[4].color] += 2
+					self.can_rotaciones[self.posiciones[3].color] += 1
+					self.can_rotaciones[self.posiciones[1].color] += 3
 					# rotación funcional
 					self.posiciones[0], self.posiciones[2], self.posiciones[4], self.posiciones[5] = self.posiciones[2], self.posiciones[5], self.posiciones[0], self.posiciones[4]
-					# rotación visual
-
 				else:
+					self.can_rotaciones[self.posiciones[5].color] += 2
+					self.can_rotaciones[self.posiciones[4].color] += 2
+					self.can_rotaciones[self.posiciones[3].color] += 3
+					self.can_rotaciones[self.posiciones[1].color] += 1
 					self.posiciones[2], self.posiciones[5], self.posiciones[0], self.posiciones[4] = self.posiciones[0], self.posiciones[2], self.posiciones[4], self.posiciones[5]
 			case "Y":
 				if not prima:
+					self.can_rotaciones[self.posiciones[0].color] += 1
+					self.can_rotaciones[self.posiciones[5].color] += 3
 					self.posiciones[1], self.posiciones[2], self.posiciones[3], self.posiciones[4] = self.posiciones[2], self.posiciones[3], self.posiciones[4], self.posiciones[1]
 				else:
+					self.can_rotaciones[self.posiciones[0].color] += 3
+					self.can_rotaciones[self.posiciones[5].color] += 1
 					self.posiciones[2], self.posiciones[3], self.posiciones[4], self.posiciones[1] = self.posiciones[1], self.posiciones[2], self.posiciones[3], self.posiciones[4]
 			case "Z":
 				if not prima:
+					self.can_rotaciones[self.posiciones[0].color] += 1
+					self.can_rotaciones[self.posiciones[2].color] += 1
+					self.can_rotaciones[self.posiciones[4].color] += 3
+					self.can_rotaciones[self.posiciones[3].color] += 1
+					self.can_rotaciones[self.posiciones[1].color] += 1
+					self.can_rotaciones[self.posiciones[5].color] += 1
 					self.posiciones[0], self.posiciones[1], self.posiciones[3], self.posiciones[5] = self.posiciones[1], self.posiciones[5], self.posiciones[0], self.posiciones[3]
 				else:
+					self.can_rotaciones[self.posiciones[0].color] += 3
+					self.can_rotaciones[self.posiciones[2].color] += 3
+					self.can_rotaciones[self.posiciones[4].color] += 1
+					self.can_rotaciones[self.posiciones[3].color] += 3
+					self.can_rotaciones[self.posiciones[1].color] += 3
+					self.can_rotaciones[self.posiciones[5].color] += 3
 					self.posiciones[1], self.posiciones[5], self.posiciones[0], self.posiciones[3] = self.posiciones[0], self.posiciones[1], self.posiciones[3], self.posiciones[5]
 
 	def __str__(self):
+		cara_bl_visual = Cara(Color.BLANCO, self.cara_bl.cara.copy())
+		cara_na_visual = Cara(Color.NARANJA, self.cara_na.cara.copy())
+		cara_ve_visual = Cara(Color.VERDE, self.cara_ve.cara.copy())
+		cara_ro_visual = Cara(Color.ROJO, self.cara_ro.cara.copy())
+		cara_az_visual = Cara(Color.AZUL, self.cara_az.cara.copy())
+		cara_am_visual = Cara(Color.AMARILLO, self.cara_am.cara.copy())
+
+		posiciones_visual = [cara.color for cara in self.posiciones]
+
+		posiciones_visual[posiciones_visual.index(Color.BLANCO)] = cara_bl_visual
+		posiciones_visual[posiciones_visual.index(Color.NARANJA)] = cara_na_visual
+		posiciones_visual[posiciones_visual.index(Color.VERDE)] = cara_ve_visual
+		posiciones_visual[posiciones_visual.index(Color.ROJO)] = cara_ro_visual
+		posiciones_visual[posiciones_visual.index(Color.AZUL)] = cara_az_visual
+		posiciones_visual[posiciones_visual.index(Color.AMARILLO)] = cara_am_visual
+		
+
+		for cara in posiciones_visual:
+			print(f"{cara.color} está en posición {posiciones_visual.index(cara)} y tiene que rotar {self.can_rotaciones[cara.color]} veces")
+			for _ in range(self.can_rotaciones[cara.color]):
+				cara.rotar()
+
 		return (
-			                                             f"       {self.cara_bl[0]}{self.cara_bl[1]}{self.cara_bl[2]}\n"
-			                                             f"       {self.cara_bl[3]}{self.cara_bl[4]}{self.cara_bl[5]}\n"
-			                                             f"       {self.cara_bl[6]}{self.cara_bl[7]}{self.cara_bl[8]}\n"
-			f"{self.cara_na[0]}{self.cara_na[1]}{self.cara_na[2]} {self.cara_ve[0]}{self.cara_ve[1]}{self.cara_ve[2]} {self.cara_ro[0]}{self.cara_ro[1]}{self.cara_ro[2]} {self.cara_az[0]}{self.cara_az[1]}{self.cara_az[2]}\n"
-			f"{self.cara_na[3]}{self.cara_na[4]}{self.cara_na[5]} {self.cara_ve[3]}{self.cara_ve[4]}{self.cara_ve[5]} {self.cara_ro[3]}{self.cara_ro[4]}{self.cara_ro[5]} {self.cara_az[3]}{self.cara_az[4]}{self.cara_az[5]}\n"
-			f"{self.cara_na[6]}{self.cara_na[7]}{self.cara_na[8]} {self.cara_ve[6]}{self.cara_ve[7]}{self.cara_ve[8]} {self.cara_ro[6]}{self.cara_ro[7]}{self.cara_ro[8]} {self.cara_az[6]}{self.cara_az[7]}{self.cara_az[8]}\n"
-			                                             f"       {self.cara_am[0]}{self.cara_am[1]}{self.cara_am[2]}\n"
-			                                             f"       {self.cara_am[3]}{self.cara_am[4]}{self.cara_am[5]}\n"
-			                                             f"       {self.cara_am[6]}{self.cara_am[7]}{self.cara_am[8]}\n"
+			                                             f"       {posiciones_visual[0][0]}{posiciones_visual[0][1]}{posiciones_visual[0][2]}\n"
+			                                             f"       {posiciones_visual[0][3]}{posiciones_visual[0][4]}{posiciones_visual[0][5]}\n"
+			                                             f"       {posiciones_visual[0][6]}{posiciones_visual[0][7]}{posiciones_visual[0][8]}\n"
+			f"{posiciones_visual[1][0]}{posiciones_visual[1][1]}{posiciones_visual[1][2]} {posiciones_visual[2][0]}{posiciones_visual[2][1]}{posiciones_visual[2][2]} {posiciones_visual[3][0]}{posiciones_visual[3][1]}{posiciones_visual[3][2]} {posiciones_visual[4][0]}{posiciones_visual[4][1]}{posiciones_visual[4][2]}\n"
+			f"{posiciones_visual[1][3]}{posiciones_visual[1][4]}{posiciones_visual[1][5]} {posiciones_visual[2][3]}{posiciones_visual[2][4]}{posiciones_visual[2][5]} {posiciones_visual[3][3]}{posiciones_visual[3][4]}{posiciones_visual[3][5]} {posiciones_visual[4][3]}{posiciones_visual[4][4]}{posiciones_visual[4][5]}\n"
+			f"{posiciones_visual[1][6]}{posiciones_visual[1][7]}{posiciones_visual[1][8]} {posiciones_visual[2][6]}{posiciones_visual[2][7]}{posiciones_visual[2][8]} {posiciones_visual[3][6]}{posiciones_visual[3][7]}{posiciones_visual[3][8]} {posiciones_visual[4][6]}{posiciones_visual[4][7]}{posiciones_visual[4][8]}\n"
+			                                             f"       {posiciones_visual[5][0]}{posiciones_visual[5][1]}{posiciones_visual[5][2]}\n"
+			                                             f"       {posiciones_visual[5][3]}{posiciones_visual[5][4]}{posiciones_visual[5][5]}\n"
+			                                             f"       {posiciones_visual[5][6]}{posiciones_visual[5][7]}{posiciones_visual[5][8]}\n"
 		)
 
 	def __repr__(self):
@@ -169,9 +223,9 @@ class Cubo:
 
 
 class Cara:
-	def __init__(self, color: Color):
+	def __init__(self, color: Color, cara=None):
 		self.color = color
-		self.cara = [color] * 9		
+		self.cara = [color] * 9 if cara is None else cara
 		# 0 1 2
 		# 3 4 5
 		# 6 7 8
@@ -215,7 +269,6 @@ class Cara:
 				self.cara[0], self.cara[3], self.cara[6] = valores
 			case "R":
 				self.cara[2], self.cara[5], self.cara[8] = valores
-
 
 class Color(Enum):
 	BLANCO = "bl"
