@@ -99,4 +99,6 @@ while running:
 
 	pygame.display.flip()
 
+	cubo.hacer_movimiento(input("> "))
+
 pygame.quit()
