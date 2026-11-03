@@ -184,25 +184,9 @@ class Cubo:
 					self.posiciones[1], self.posiciones[5], self.posiciones[0], self.posiciones[3] = self.posiciones[0], self.posiciones[1], self.posiciones[3], self.posiciones[5]
 
 	def get_posiciones_visual(self):
-		cara_bl_visual = Cara(Color.BLANCO, self.cara_bl.cara.copy())
-		cara_na_visual = Cara(Color.NARANJA, self.cara_na.cara.copy())
-		cara_ve_visual = Cara(Color.VERDE, self.cara_ve.cara.copy())
-		cara_ro_visual = Cara(Color.ROJO, self.cara_ro.cara.copy())
-		cara_az_visual = Cara(Color.AZUL, self.cara_az.cara.copy())
-		cara_am_visual = Cara(Color.AMARILLO, self.cara_am.cara.copy())
-
-		posiciones_visual = [cara.color for cara in self.posiciones]
-
-		posiciones_visual[posiciones_visual.index(Color.BLANCO)] = cara_bl_visual
-		posiciones_visual[posiciones_visual.index(Color.NARANJA)] = cara_na_visual
-		posiciones_visual[posiciones_visual.index(Color.VERDE)] = cara_ve_visual
-		posiciones_visual[posiciones_visual.index(Color.ROJO)] = cara_ro_visual
-		posiciones_visual[posiciones_visual.index(Color.AZUL)] = cara_az_visual
-		posiciones_visual[posiciones_visual.index(Color.AMARILLO)] = cara_am_visual
+		posiciones_visual = [Cara(cara.color, cara.cara.copy()) for cara in self.posiciones]
 		
-
 		for cara in posiciones_visual:
-			# print(f"{cara.color} está en posición {posiciones_visual.index(cara)} y tiene que rotar {self.can_rotaciones[cara.color]} veces")
 			for _ in range(self.can_rotaciones[cara.color]):
 				cara.rotar()
 
@@ -210,7 +194,7 @@ class Cubo:
 
 	def __str__(self):
 		posiciones_visual = self.get_posiciones_visual()
-		
+
 		return (
 			                                             f"       {posiciones_visual[0][0]}{posiciones_visual[0][1]}{posiciones_visual[0][2]}\n"
 			                                             f"       {posiciones_visual[0][3]}{posiciones_visual[0][4]}{posiciones_visual[0][5]}\n"
