@@ -8,32 +8,40 @@ class Cubo:
 		self.cara_ro = Cara(Color.ROJO)
 		self.cara_az = Cara(Color.AZUL)
 		self.cara_am = Cara(Color.AMARILLO)
-		# 0 1 2
-		# 3 4 5
-		# 6 7 8
 
 		# default: F: verde, U: blanco, R: rojo, ...
 		self.posiciones = [self.cara_bl, 
 			 self.cara_na, self.cara_ve, self.cara_ro, self.cara_az, 
 				  		   self.cara_am]
-		
-	# función que obtenga la transformación del cubo en función del movimiento + posición del cubo
-	# ej. (movimiento R) + (a la derecha está el rojo): (sentido antihorario en la cara roja)
-	def get_transformacion(self, movimiento):
-		match movimiento[0]:
-			case "R":
-				return self.posiciones[3], "'" in movimiento
-			case "U":
-				return self.posiciones[0], "'" in movimiento
-			case "F":
-				return self.posiciones[2], "'" in movimiento
-			case "D":
-				return self.posiciones[5], "'" in movimiento
-			case "L":
-				return self.posiciones[1], "'" in movimiento
-			case "B":
-				return self.posiciones[4], "'" in movimiento
 
+		self.giros = ("R", "U", "F", "D", "L", "B")
+		self.rotaciones = ("X", "Y", "Z")
+		
+	def hacer_movimiento(self, movimiento):
+		movimiento = movimiento.upper()
+
+		if movimiento[0] in self.giros:
+			match movimiento[0]:
+				case "R":
+					cara = self.posiciones[3]
+				case "U":
+					cara = self.posiciones[0]
+				case "F":
+					cara = self.posiciones[2]
+				case "D":
+					cara = self.posiciones[5]
+				case "L":
+					cara = self.posiciones[1]
+				case "B":
+					cara = self.posiciones[4]
+
+			prima = "'" in movimiento
+			self.girar(cara, prima)
+
+		elif movimiento[0] in self.rotaciones:
+			mov = movimiento[0]
+			prima = "'" in movimiento
+			self.rotar(mov, prima)
 
 	def girar(self, cara, prima=False):
 		cara.rotar(prima)
@@ -122,28 +130,26 @@ class Cubo:
 					self.cara_am.set_linea("D'", self.cara_ro.get_linea("R'"))
 					self.cara_ro.set_linea("R'", aux)
 
-	def hacer_movimiento(self, movimiento):
-		# seguramente todo este flujo se puede hacer mejor
-		movimiento = movimiento.upper()
+	def rotar(self, movimiento, prima):
+		match movimiento:
+			case "X":
+				if not prima:
+					# rotación funcional
+					self.posiciones[0], self.posiciones[2], self.posiciones[4], self.posiciones[5] = self.posiciones[2], self.posiciones[5], self.posiciones[0], self.posiciones[4]
+					# rotación visual
 
-		# rotaciones:
-		if movimiento == "X":
-			self.posiciones[0], self.posiciones[2], self.posiciones[4], self.posiciones[5] = self.posiciones[2], self.posiciones[5], self.posiciones[0], self.posiciones[4]
-		elif movimiento == "Y":
-			self.posiciones[1], self.posiciones[2], self.posiciones[3], self.posiciones[4] = self.posiciones[2], self.posiciones[3], self.posiciones[4], self.posiciones[1]
-		elif movimiento == "Z":
-			self.posiciones[0], self.posiciones[1], self.posiciones[3], self.posiciones[5] = self.posiciones[1], self.posiciones[5], self.posiciones[0], self.posiciones[3]
-		elif movimiento == "X'":
-			self.posiciones[2], self.posiciones[5], self.posiciones[0], self.posiciones[4] = self.posiciones[0], self.posiciones[2], self.posiciones[4], self.posiciones[5]
-		elif movimiento == "Y'":
-			self.posiciones[2], self.posiciones[3], self.posiciones[4], self.posiciones[1] = self.posiciones[1], self.posiciones[2], self.posiciones[3], self.posiciones[4]
-		elif movimiento == "Z'":
-			self.posiciones[1], self.posiciones[5], self.posiciones[0], self.posiciones[3] = self.posiciones[0], self.posiciones[1], self.posiciones[3], self.posiciones[5]
-		else:
-			# girar alguna cara:
-			transformacion = self.get_transformacion(movimiento)
-			cara, prima = transformacion
-			self.girar(cara, prima)
+				else:
+					self.posiciones[2], self.posiciones[5], self.posiciones[0], self.posiciones[4] = self.posiciones[0], self.posiciones[2], self.posiciones[4], self.posiciones[5]
+			case "Y":
+				if not prima:
+					self.posiciones[1], self.posiciones[2], self.posiciones[3], self.posiciones[4] = self.posiciones[2], self.posiciones[3], self.posiciones[4], self.posiciones[1]
+				else:
+					self.posiciones[2], self.posiciones[3], self.posiciones[4], self.posiciones[1] = self.posiciones[1], self.posiciones[2], self.posiciones[3], self.posiciones[4]
+			case "Z":
+				if not prima:
+					self.posiciones[0], self.posiciones[1], self.posiciones[3], self.posiciones[5] = self.posiciones[1], self.posiciones[5], self.posiciones[0], self.posiciones[3]
+				else:
+					self.posiciones[1], self.posiciones[5], self.posiciones[0], self.posiciones[3] = self.posiciones[0], self.posiciones[1], self.posiciones[3], self.posiciones[5]
 
 	def __str__(self):
 		return (
@@ -162,11 +168,13 @@ class Cubo:
 		return self.__str__()
 
 
-
 class Cara:
 	def __init__(self, color: Color):
 		self.color = color
-		self.cara = [color] * 9
+		self.cara = [color] * 9		
+		# 0 1 2
+		# 3 4 5
+		# 6 7 8
 
 	def __getitem__(self, indice):
 		return self.cara[indice]
