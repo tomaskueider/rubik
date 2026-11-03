@@ -196,15 +196,15 @@ class Cubo:
 		posiciones_visual = self.get_posiciones_visual()
 
 		return (
-			                                             f"       {posiciones_visual[0][0]}{posiciones_visual[0][1]}{posiciones_visual[0][2]}\n"
-			                                             f"       {posiciones_visual[0][3]}{posiciones_visual[0][4]}{posiciones_visual[0][5]}\n"
-			                                             f"       {posiciones_visual[0][6]}{posiciones_visual[0][7]}{posiciones_visual[0][8]}\n"
-			f"{posiciones_visual[1][0]}{posiciones_visual[1][1]}{posiciones_visual[1][2]} {posiciones_visual[2][0]}{posiciones_visual[2][1]}{posiciones_visual[2][2]} {posiciones_visual[3][0]}{posiciones_visual[3][1]}{posiciones_visual[3][2]} {posiciones_visual[4][0]}{posiciones_visual[4][1]}{posiciones_visual[4][2]}\n"
-			f"{posiciones_visual[1][3]}{posiciones_visual[1][4]}{posiciones_visual[1][5]} {posiciones_visual[2][3]}{posiciones_visual[2][4]}{posiciones_visual[2][5]} {posiciones_visual[3][3]}{posiciones_visual[3][4]}{posiciones_visual[3][5]} {posiciones_visual[4][3]}{posiciones_visual[4][4]}{posiciones_visual[4][5]}\n"
-			f"{posiciones_visual[1][6]}{posiciones_visual[1][7]}{posiciones_visual[1][8]} {posiciones_visual[2][6]}{posiciones_visual[2][7]}{posiciones_visual[2][8]} {posiciones_visual[3][6]}{posiciones_visual[3][7]}{posiciones_visual[3][8]} {posiciones_visual[4][6]}{posiciones_visual[4][7]}{posiciones_visual[4][8]}\n"
-			                                             f"       {posiciones_visual[5][0]}{posiciones_visual[5][1]}{posiciones_visual[5][2]}\n"
-			                                             f"       {posiciones_visual[5][3]}{posiciones_visual[5][4]}{posiciones_visual[5][5]}\n"
-			                                             f"       {posiciones_visual[5][6]}{posiciones_visual[5][7]}{posiciones_visual[5][8]}\n"
+			                     f"       {posiciones_visual[0][0:3]}\n"
+			                     f"       {posiciones_visual[0][3:6]}\n"
+			                     f"       {posiciones_visual[0][6: ]}\n"
+			f"{posiciones_visual[1][0:3]} {posiciones_visual[2][0:3]} {posiciones_visual[3][0:3]} {posiciones_visual[4][0:3]}\n"
+			f"{posiciones_visual[1][3:6]} {posiciones_visual[2][3:6]} {posiciones_visual[3][3:6]} {posiciones_visual[4][3:6]}\n"
+			f"{posiciones_visual[1][6: ]} {posiciones_visual[2][6: ]} {posiciones_visual[3][6: ]} {posiciones_visual[4][6: ]}\n"
+			                     f"       {posiciones_visual[5][0:3]}\n"
+			                     f"       {posiciones_visual[5][3:6]}\n"
+			                     f"       {posiciones_visual[5][6: ]}\n"
 		)
 
 	def __repr__(self):
@@ -220,6 +220,10 @@ class Cara:
 		# 6 7 8
 
 	def __getitem__(self, indice):
+		if isinstance(indice, slice):
+			parte = self.cara[indice]
+			return "".join(str(e) for e in parte)
+
 		return self.cara[indice]
 
 	def __setitem__(self, indice, valor):
