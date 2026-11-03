@@ -63,13 +63,13 @@ while running:
 	# cara U
 	for color, coords in zip(colores_u, coords_u):
 		# print(color, get_color(color), coords, get_coords(coords, templ_u, size, offset))
-		pygame.draw.polygon(screen, get_color(color), get_coords(coords, templ_u, size, offset))
+		pygame.draw.polygon(screen, get_color(color), get_coords(coords, templ_u, size, offset), 3)
 	
 	for color, coords in zip(colores_f, coords_f):
-		pygame.draw.polygon(screen, get_color(color), get_coords(coords, templ_f, size, offset))
+		pygame.draw.polygon(screen, get_color(color), get_coords(coords, templ_f, size, offset), 3)
 
 	for color, coords in zip(colores_r, coords_r):
-		pygame.draw.polygon(screen, get_color(color), get_coords(coords, templ_r, size, offset))
+		pygame.draw.polygon(screen, get_color(color), get_coords(coords, templ_r, size, offset), 3)
 
 
 	for event in pygame.event.get():
