@@ -3,8 +3,10 @@ from cubo import Cubo, Color
 
 pygame.init()
 
-screen = pygame.display.set_mode((512, 512))
-screen.fill((20, 25, 31))
+screen_size = (512, 512)
+screen_color = (20, 25, 31)
+screen = pygame.display.set_mode(screen_size)
+screen.fill(screen_color)
 
 def get_color(color):
 	match color:
@@ -30,6 +32,19 @@ def multiplicar_tupla(t, v):
 def get_coords(position, template, size, offset):
 	return tuple(sumar_tuplas(multiplicar_tupla(sumar_tuplas(position, template[i]), size), offset) for i in range(4))
 	
+
+def restar_tuplas(t1, t2):
+	return ((t1[0] - t2[0]), (t1[1] - t2[1]))
+
+def dividir_tupla(t, v):
+	return ((t[0] // v), (t[1] // v))
+
+def get_offset(cube_center, size, screen_size):
+	center = multiplicar_tupla(cube_center, size) # radio
+	center = multiplicar_tupla(center, 2) # diámetro - esto seguro se puede hacer más limpio
+	return tuple(dividir_tupla(restar_tuplas(screen_size, center), 2))
+
+
 templ_u = ((0, 0), (2, 1), (0, 2), (-2, 1))
 templ_f = ((0, 0), (2, 1), (2, 3.33), (0, 2.33))
 templ_r = ((0, 0), (2, -1), (2, 1.33), (0, 2.33))
@@ -43,10 +58,18 @@ coords_base = {
 # multiplicar todo x3 para que quede redondo
 # lo hice a esta escala para que la distancia más chica quede en 1
 
-size = 10
-offset = (100, 50)
+## variables ##
+size = 20
+
+# offset (mejorar)
+cube_center = coords_base["r"][0]
+offset = get_offset(cube_center, size, screen_size)
+#
+
+# bordes
 outline_color = (24, 24, 24)
-outline_width = 2
+outline_width = size // 5
+#
 
 cubo = Cubo()
 running = True
