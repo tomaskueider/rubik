@@ -139,16 +139,16 @@ class Cubo:
 			case Color.AZUL:
 				if not prima:
 					aux = self.cara_bl.get_linea("U")
-					self.cara_bl.set_linea("U", self.cara_ro.get_linea("R'"))
-					self.cara_ro.set_linea("R'", self.cara_am.get_linea("D'"))
+					self.cara_bl.set_linea("U", self.cara_ro.get_linea("R"))
+					self.cara_ro.set_linea("R", self.cara_am.get_linea("D'"))
 					self.cara_am.set_linea("D'", self.cara_na.get_linea("L'"))
 					self.cara_na.set_linea("L'", aux)
 				else:
 					aux = self.cara_bl.get_linea("U")
 					self.cara_bl.set_linea("U", self.cara_na.get_linea("L'"))
 					self.cara_na.set_linea("L'", self.cara_am.get_linea("D'"))
-					self.cara_am.set_linea("D'", self.cara_ro.get_linea("R'"))
-					self.cara_ro.set_linea("R'", aux)
+					self.cara_am.set_linea("D'", self.cara_ro.get_linea("R"))
+					self.cara_ro.set_linea("R", aux)
 
 	def rotar(self, movimiento, prima):
 		match movimiento:
