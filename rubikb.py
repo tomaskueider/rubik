@@ -94,6 +94,8 @@ outline_width = size // 5
 
 ## inicialización del cubo ##
 cubo = Cubo()
+mezcla = "U R' F B R2 D' R D2 R2 U2 F' L2 F' B2 D2 R2 F R2 U' B2"
+cubo.mezclar(mezcla)
 #############################
 
 running = True

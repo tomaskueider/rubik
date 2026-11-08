@@ -25,6 +25,8 @@ class Cubo:
 			Color.AZUL: 0,
 			Color.AMARILLO: 0
 		}
+
+		self.lista_movimientos = []
 		
 	def hacer_movimiento(self, movimiento):
 		movimiento = movimiento.upper()
@@ -52,8 +54,17 @@ class Cubo:
 			prima = "'" in movimiento
 			self.rotar(mov, prima)
 
+		self.lista_movimientos.append(movimiento)
+
+	def mezclar(self, mezcla):
+		for mov in mezcla.split(" "):
+			self.hacer_movimiento(mov)
+			if "2" in mov:
+				self.hacer_movimiento(mov)
+
 	def girar(self, cara, prima=False):
 		cara.rotar(prima)
+
 		match cara.color:
 			case Color.ROJO:
 				if not prima:
@@ -227,7 +238,7 @@ class Color(Enum):
 class Cara:
 	def __init__(self, color: Color, cara=None):
 		self.color = color
-		self.cara = [color] * 9 if cara is None else cara
+		self.cara = [color] * 9 if cara is None else cara  # renombrar por self.colores
 		# 0 1 2
 		# 3 4 5
 		# 6 7 8
@@ -276,18 +287,27 @@ class Cara:
 			case "R":
 				self.cara[2], self.cara[5], self.cara[8] = valores
 
+	def __str__(self):
+		return "[" + ", ".join(str(c) for c in self.cara) + "]"
+
+	def __repr__(self):
+		return self.__str__()
+
 
 if __name__ == '__main__':
 	cubo = Cubo()
 	print(cubo)
 
+	mezcla = "U R' F B R2 D' R D2 R2 U2 F' L2 F' B2 D2 R2 F R2 U' B2"
+	print(mezcla)
+	cubo.mezclar(mezcla)
+
 	mov = input("> ")
 	while mov not in  ("Q", "q"):
-
 		cubo.hacer_movimiento(mov)
 
 		print()
-		print(cubo)
+		# print(cubo)
 
 		mov = input("> ")
 	
