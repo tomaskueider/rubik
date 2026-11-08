@@ -195,7 +195,7 @@ class Cubo:
 					self.posiciones[1], self.posiciones[5], self.posiciones[0], self.posiciones[3] = self.posiciones[0], self.posiciones[1], self.posiciones[3], self.posiciones[5]
 
 	def get_posiciones_visual(self):
-		posiciones_visual = [Cara(cara.color, cara.cara.copy()) for cara in self.posiciones]
+		posiciones_visual = [Cara(cara.color, cara.colores.copy()) for cara in self.posiciones]
 		
 		for cara in posiciones_visual:
 			for _ in range(self.can_rotaciones[cara.color]):
@@ -238,39 +238,39 @@ class Color(Enum):
 class Cara:
 	def __init__(self, color: Color, cara=None):
 		self.color = color
-		self.cara = [color] * 9 if cara is None else cara  # renombrar por self.colores
+		self.colores = [color] * 9 if cara is None else cara  # renombrar por self.colores
 		# 0 1 2
 		# 3 4 5
 		# 6 7 8
 
 	def __getitem__(self, indice):
 		if isinstance(indice, slice):
-			parte = self.cara[indice]
+			parte = self.colores[indice]
 			return "".join(str(e) for e in parte)
 
-		return self.cara[indice]
+		return self.colores[indice]
 
 	def __setitem__(self, indice, valor):
-		self.cara[indice] = valor
+		self.colores[indice] = valor
 
 	def rotar(self, prima=False):
 		if not prima:
-			self.cara[0], self.cara[1], self.cara[2], self.cara[3], self.cara[5], self.cara[6], self.cara[7], self.cara[8] = self.cara[6], self.cara[3], self.cara[0], self.cara[7], self.cara[1], self.cara[8], self.cara[5], self.cara[2]
+			self.colores[0], self.colores[1], self.colores[2], self.colores[3], self.colores[5], self.colores[6], self.colores[7], self.colores[8] = self.colores[6], self.colores[3], self.colores[0], self.colores[7], self.colores[1], self.colores[8], self.colores[5], self.colores[2]
 		else:
-			self.cara[6], self.cara[3], self.cara[0], self.cara[7], self.cara[1], self.cara[8], self.cara[5], self.cara[2] = self.cara[0], self.cara[1], self.cara[2], self.cara[3], self.cara[5], self.cara[6], self.cara[7], self.cara[8]
+			self.colores[6], self.colores[3], self.colores[0], self.colores[7], self.colores[1], self.colores[8], self.colores[5], self.colores[2] = self.colores[0], self.colores[1], self.colores[2], self.colores[3], self.colores[5], self.colores[6], self.colores[7], self.colores[8]
 
 	def get_linea(self, linea):
 		# líneas: U  D  L  R  - de izquierda a derecha, de arriba hacia abajo
 		# líneas: U' D' L' R' - de derecha a izquierda, de abajo hacia arriba
 		match linea[0]:
 			case "U":
-				valores = self.cara[0], self.cara[1], self.cara[2]
+				valores = self.colores[0], self.colores[1], self.colores[2]
 			case "D":
-				valores = self.cara[6], self.cara[7], self.cara[8]
+				valores = self.colores[6], self.colores[7], self.colores[8]
 			case "L":
-				valores = self.cara[0], self.cara[3], self.cara[6]
+				valores = self.colores[0], self.colores[3], self.colores[6]
 			case "R":
-				valores = self.cara[2], self.cara[5], self.cara[8]
+				valores = self.colores[2], self.colores[5], self.colores[8]
 		
 		return valores if "'" not in linea else valores[::-1]
 
@@ -279,16 +279,16 @@ class Cara:
 			valores = valores[::-1]
 		match linea[0]:
 			case "U":
-				self.cara[0], self.cara[1], self.cara[2] = valores
+				self.colores[0], self.colores[1], self.colores[2] = valores
 			case "D":
-				self.cara[6], self.cara[7], self.cara[8] = valores
+				self.colores[6], self.colores[7], self.colores[8] = valores
 			case "L":
-				self.cara[0], self.cara[3], self.cara[6] = valores
+				self.colores[0], self.colores[3], self.colores[6] = valores
 			case "R":
-				self.cara[2], self.cara[5], self.cara[8] = valores
+				self.colores[2], self.colores[5], self.colores[8] = valores
 
 	def __str__(self):
-		return "[" + ", ".join(str(c) for c in self.cara) + "]"
+		return "[" + ", ".join(str(c) for c in self.colores) + "]"
 
 	def __repr__(self):
 		return self.__str__()
